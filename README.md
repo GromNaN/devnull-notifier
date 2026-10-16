@@ -15,12 +15,19 @@ DSN example
 DEVNULL_DSN=devnull://default?private_key=%2Fhome%2Fme%2F.ssh%2Fid_ed25519
 ```
 
+The `private_key` option is optional. When it is missing, the default SSH key of the user
+running the application is used: `~/.ssh/id_ed25519` first, then `~/.ssh/id_rsa`.
+
+```
+DEVNULL_DSN=devnull://default
+```
+
 DSN options
 -----------
 
 | Option        | Required | Description                                                                                 |
 |---------------|----------|---------------------------------------------------------------------------------------------|
-| `private_key` | yes      | Path to the OpenSSH private key used to sign the commit.                                    |
+| `private_key` | no       | Path to the OpenSSH private key used to sign the commit. Defaults to the key of the user.   |
 | `passphrase`  | no       | Passphrase of the private key, if it is encrypted.                                          |
 | `namespace`   | no       | Signature namespace. Defaults to `devnull-commit`, the value dev-null.sh expects.           |
 | `ssl`         | no       | Set to `0` to use `http` instead of `https`, for a self-hosted instance. Defaults to `1`.    |
@@ -59,6 +66,36 @@ $options = (new DevNullOptions())->replyTo('0be0130');
 $chatter->send(new ChatMessage('Agreed!', $options));
 ```
 
+Standalone usage
+----------------
+
+The bridge also works without a Symfony application, by passing the transport factory to
+the `Transport` class of the Notifier. A runnable example is provided in
+[`examples/standalone.php`](examples/standalone.php):
+
+```php
+use GromNaN\Notifier\Bridge\DevNull\DevNullTransportFactory;
+use Symfony\Component\Notifier\Chatter;
+use Symfony\Component\Notifier\Message\ChatMessage;
+use Symfony\Component\Notifier\Transport;
+
+require __DIR__.'/vendor/autoload.php';
+
+// The Transport class only knows the bridges shipped with symfony/notifier, so it is built
+// with an explicit factory list. Adding DevNullTransportFactory teaches it "devnull://".
+$transportFactory = new Transport([
+    new DevNullTransportFactory(),
+]);
+
+$transport = $transportFactory->fromString('devnull://default?private_key=%2Fhome%2Fme%2F.ssh%2Fid_ed25519');
+
+$chatter = new Chatter($transport);
+
+$sentMessage = $chatter->send(new ChatMessage('Shipped the dev-null.sh notifier bridge!'));
+
+echo $sentMessage->getMessageId();
+```
+
 How it works
 ------------
 
@@ -77,6 +114,9 @@ Requirements
 
 The private key must be one of the keys on the GitHub account of the dev-null.sh user you
 commit as. Ed25519 and RSA keys are supported.
+
+The key is read from the filesystem. A key that only lives in an ssh-agent cannot be used,
+because the signature is computed in PHP and the agent never hands out the private key.
 
 Installation
 ------------

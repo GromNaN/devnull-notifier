@@ -3,7 +3,7 @@
 /*
  * This file is part of the gromnan/devnull-notifier package.
  *
- * (c) Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * (c) Jérôme Tamarelle <jerome@tamarelle.net>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@ namespace GromNaN\Notifier\Bridge\DevNull;
 use Symfony\Component\Notifier\Message\MessageOptionsInterface;
 
 /**
- * @author Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
 final class DevNullOptions implements MessageOptionsInterface
 {

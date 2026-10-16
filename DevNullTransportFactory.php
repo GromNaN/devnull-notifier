@@ -3,7 +3,7 @@
 /*
  * This file is part of the gromnan/devnull-notifier package.
  *
- * (c) Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * (c) Jérôme Tamarelle <jerome@tamarelle.net>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,12 +11,13 @@
 
 namespace GromNaN\Notifier\Bridge\DevNull;
 
+use Symfony\Component\Notifier\Exception\MissingRequiredOptionException;
 use Symfony\Component\Notifier\Exception\UnsupportedSchemeException;
 use Symfony\Component\Notifier\Transport\AbstractTransportFactory;
 use Symfony\Component\Notifier\Transport\Dsn;
 
 /**
- * @author Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
 final class DevNullTransportFactory extends AbstractTransportFactory
 {
@@ -26,8 +27,15 @@ final class DevNullTransportFactory extends AbstractTransportFactory
             throw new UnsupportedSchemeException($dsn, 'devnull', $this->getSupportedSchemes());
         }
 
+        $privateKey = $dsn->getOption('private_key');
+
+        if (!\is_string($privateKey) || '' === trim($privateKey)) {
+            $privateKey = SshKeyLocator::fromEnvironment()->locate()
+                ?? throw new MissingRequiredOptionException('private_key');
+        }
+
         $signer = new SshSigner(
-            (string) $dsn->getRequiredOption('private_key'),
+            $privateKey,
             $dsn->getOption('passphrase'),
             $dsn->getOption('namespace', SshSigner::NAMESPACE),
         );

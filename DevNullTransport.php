@@ -3,7 +3,7 @@
 /*
  * This file is part of the gromnan/devnull-notifier package.
  *
- * (c) Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * (c) Jérôme Tamarelle <jerome@tamarelle.net>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * Posts a commit to dev-null.sh, signed with the author's SSH key.
  *
- * @author Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
 final class DevNullTransport extends AbstractTransport
 {

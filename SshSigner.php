@@ -3,7 +3,7 @@
 /*
  * This file is part of the gromnan/devnull-notifier package.
  *
- * (c) Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * (c) Jérôme Tamarelle <jerome@tamarelle.net>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,7 +26,7 @@ use Symfony\Component\Notifier\Exception\LogicException;
  *
  * @see https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.sshsig
  *
- * @author Jérôme Tamarelle <jerome.tamarelle@mongodb.com>
+ * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
 final class SshSigner
 {

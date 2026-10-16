@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "Jérôme Tamarelle",
-            "email": "jerome.tamarelle@mongodb.com"
+            "email": "jerome@tamarelle.net"
         }
     ],
     "require": {
